@@ -672,6 +672,8 @@
 
   .form-group {
     margin-bottom: 1.4rem;
+   display: flex;
+  flex-direction: column;
 }
 
   .form-group label {
@@ -700,19 +702,6 @@
     border-radius: 0;
   }
 
-.name-row {
- display: flex;
-  gap: 10px;
-}
-
-.name-row .fname {
-  flex: 1;   /* smaller */
-}
-
-.name-row .lname {
-  flex: 2;   /* bigger */
-}
-
   .form-group select option {
     background: var(--warm-white);
     color: var(--charcoal);
@@ -735,10 +724,18 @@
   }
 
   .form-row {
-    display: grid;
+    display: flex;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
   }
+
+.form-group:first-child {
+  flex: 1;   /* First name smaller */
+}
+
+.form-group:last-child {
+  flex: 2;   /* Last name bigger */
+}
 
   .form-submit {
     display: inline-flex;
