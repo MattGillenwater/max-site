@@ -672,8 +672,6 @@
 
   .form-group {
     margin-bottom: 1.4rem;
-  display: flex;
-  gap: 10px;
 }
 
   .form-group label {
@@ -702,11 +700,16 @@
     border-radius: 0;
   }
 
-.form-group .fname {
+.name-row {
+ display: flex;
+  gap: 10px;
+}
+
+.name-row .fname {
   flex: 1;   /* smaller */
 }
 
-.form-group .lname {
+.name-row .lname {
   flex: 2;   /* bigger */
 }
 
