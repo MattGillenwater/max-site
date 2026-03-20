@@ -724,6 +724,10 @@
     min-height: 130px;
   }
 
+  .form-group #event-type {
+     height: 50px;
+}
+
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
