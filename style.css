@@ -688,7 +688,7 @@
   .form-group input,
   .form-group select,
   .form-group textarea {
-    width: 100%;
+    /* width: 100%; */
     background: rgba(26,24,20,0.03);
     border: 1px solid rgba(160,120,64,0.25);
     color: var(--charcoal);
