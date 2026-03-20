@@ -702,11 +702,11 @@
     border-radius: 0;
   }
 
-.form-group .first-name {
+.form-group .fname {
   flex: 1;   /* smaller */
 }
 
-.form-group .last-name {
+.form-group .lname {
   flex: 2;   /* bigger */
 }
 
