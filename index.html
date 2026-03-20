@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Max — Sacred Musician</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #EDE5D4;
+    --warm-white: #EAE0CC;
+    --charcoal: #1A1814;
+    --deep: #0F0E0C;
+    --gold: #C9A86C;
+    --gold-dark: #A07840;
+    --gold-light: #E4C98A;
+    --muted: #6B6560;
+    --border: rgba(201, 168, 108, 0.2);
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--warm-white);
+    color: var(--charcoal);
+    overflow-x: hidden;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--charcoal);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(160,120,64,0.15);
+  }
+
+  .nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.35rem 4rem;
+    position: relative;
+  }
+
+  .nav-logo {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--gold-dark);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--warm-white);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s, color 0.2s;
+  }
+
+  .nav-links a:hover {
+    opacity: 1;
+    color: var(--gold-dark);
+  }
+
+  .nav-toggle {
+    display: none;
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgba(160,120,64,0.25);
+    background: transparent;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 18px;
+    height: 1.5px;
+    background: var(--warm-white);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .mobile-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 4rem;
+    min-width: 220px;
+    background: var(--charcoal);
+    border: 1px solid rgba(160,120,64,0.18);
+    padding: 0.75rem 0;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+  }
+
+  .mobile-menu a {
+    display: block;
+    padding: 0.95rem 1.25rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--warm-white);
+    opacity: 0.82;
+    transition: background 0.2s, color 0.2s, opacity 0.2s;
+  }
+
+  .mobile-menu a:hover {
+    background: rgba(160,120,64,0.08);
+    color: var(--gold-dark);
+    opacity: 1;
+  }
+
+  nav.menu-open .mobile-menu {
+    display: block;
+  }
+
+  nav.menu-open .nav-toggle span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+
+  nav.menu-open .nav-toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  nav.menu-open .nav-toggle span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8.5rem 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+    background: var(--warm-white);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 70% at 80% 50%, rgba(160,120,64,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 15% 80%, rgba(160,120,64,0.04) 0%, transparent 60%);
+  }
+
+  .hero-lines {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 109px,
+      rgba(160,120,64,0.06) 109px,
+      rgba(160,120,64,0.06) 110px
+    );
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(420px, 0.9fr);
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-content {
+    max-width: 760px;
+  }
+
+  .hero-media {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 1.8rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: var(--font-serif);
+    font-size: clamp(5rem, 12vw, 11rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    color: var(--charcoal);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.35s forwards;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-serif);
+    font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(26, 24, 20, 0.5);
+    max-width: 560px;
+    line-height: 1.5;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.5s forwards;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2.2rem;
+    border: 1px solid var(--gold-dark);
+    color: var(--gold-dark);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 400;
+    transition: background 0.3s, color 0.3s;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.65s forwards;
+  }
+
+  .hero-cta:hover {
+    background: var(--gold-dark);
+    color: var(--warm-white);
+  }
+
+  .hero-cta svg {
+    transition: transform 0.3s;
+  }
+
+  .hero-cta:hover svg {
+    transform: translateX(4px);
+  }
+
+  .hero-photo-wrap {
+    width: 100%;
+    max-width: 560px;
+    position: relative;
+  }
+
+  .hero-photo {
+    aspect-ratio: 16 / 10;
+    background: #DDD3BC;
+    border: 1px solid rgba(160,120,64,0.22);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: rgba(26,24,20,0.45);
+  }
+
+  .hero-photo-placeholder svg {
+    width: 56px;
+    height: 56px;
+    stroke: currentColor;
+  }
+
+  .hero-photo-placeholder p {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .hero-photo-accent {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    width: 88px;
+    height: 88px;
+    border-top: 1px solid var(--gold-dark);
+    border-right: 1px solid var(--gold-dark);
+    opacity: 0.45;
+  }
+
+  .hero-photo-accent-2 {
+    position: absolute;
+    bottom: -14px;
+    left: -14px;
+    width: 88px;
+    height: 88px;
+    border-bottom: 1px solid var(--gold-dark);
+    border-left: 1px solid var(--gold-dark);
+    opacity: 0.45;
+  }
+
+  /* ── SECTION SHARED ── */
+  section {
+    padding: 7rem 4rem;
+  }
+
+  .section-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--warm-white);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  /* ── SERVICES ── */
+  .services {
+    background: var(--charcoal);
+  }
+
+  .services .section-label { color: var(--gold); }
+  .services .section-label::before { background: var(--gold); }
+  .services .section-title { color: var(--warm-white); }
+  .services .section-title em { color: var(--gold); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5px;
+    margin-top: 4rem;
+    border: 1.5px solid var(--border);
+    background: rgba(201,168,108,0.08);
+  }
+
+  .service-card {
+    padding: 2.5rem 2rem;
+    background: var(--charcoal);
+    border: 1.5px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+    transform-origin: left;
+  }
+
+  .service-card:hover {
+    background: rgba(201,168,108,0.05);
+  }
+
+  .service-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .service-icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+  }
+
+  .service-card .service-icon {
+    stroke: var(--gold) !important;
+  }
+
+  .service-name {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--warm-white);
+    margin-bottom: 0.75rem;
+  }
+
+  .service-desc {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.5);
+    font-weight: 300;
+  }
+
+  /* ── ABOUT ── */
+  .about {
+    background: var(--warm-white);
+  }
+
+  .about .section-label { color: var(--gold-dark); }
+  .about .section-label::before { background: var(--gold-dark); }
+  .about .section-title { color: var(--charcoal); }
+  .about .section-title em { color: var(--gold-dark); }
+
+  .about-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    max-width: 1100px;
+  }
+
+  .about-photo-wrap {
+    position: relative;
+  }
+
+  .about-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: #DDD3BC;
+    border: 1px solid rgba(160,120,64,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-photo-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0.35;
+  }
+
+  .about-photo-placeholder svg {
+    width: 48px;
+    height: 48px;
+    stroke: var(--charcoal);
+  }
+
+  .about-photo-placeholder p {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+  }
+
+  .about-accent {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    width: 80px;
+    height: 80px;
+    border-top: 1px solid var(--gold-dark);
+    border-right: 1px solid var(--gold-dark);
+    opacity: 0.4;
+  }
+
+  .about-accent-2 {
+    position: absolute;
+    bottom: -16px;
+    left: -16px;
+    width: 80px;
+    height: 80px;
+    border-bottom: 1px solid var(--gold-dark);
+    border-left: 1px solid var(--gold-dark);
+    opacity: 0.4;
+  }
+
+  .about-text p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(26,24,20,0.65);
+    font-weight: 300;
+    margin-bottom: 1.4rem;
+  }
+
+  .about-text p:first-of-type {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    color: rgba(26,24,20,0.8);
+    font-style: italic;
+  }
+
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 2rem;
+  }
+
+  .skill-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border: 1px solid rgba(160,120,64,0.3);
+    color: var(--gold-dark);
+    background: rgba(160,120,64,0.06);
+  }
+
+  /* ── GALLERY ── */
+  .gallery {
+    background: var(--deep);
+  }
+
+  .gallery .section-label { color: var(--gold); }
+  .gallery .section-label::before { background: var(--gold); }
+  .gallery .section-title { color: var(--warm-white); }
+  .gallery .section-title em { color: var(--gold); }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 260px 260px;
+    gap: 3px;
+    margin-top: 3rem;
+  }
+
+  .gallery-item {
+    background: rgba(201,168,108,0.05);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .gallery-item:hover {
+    background: rgba(201,168,108,0.1);
+  }
+
+  .gallery-item:first-child {
+    grid-row: 1 / 3;
+  }
+
+  .gallery-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.25;
+    color: var(--cream);
+  }
+
+  .gallery-placeholder svg {
+    width: 32px;
+    height: 32px;
+    stroke: var(--cream);
+  }
+
+  .gallery-placeholder span {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+
+  /* ── CONTACT ── */
+  .contact {
+    background: var(--warm-white);
+  }
+
+  .contact .section-label { color: var(--gold-dark); }
+  .contact .section-label::before { background: var(--gold-dark); }
+  .contact .section-title { color: var(--charcoal); }
+  .contact .section-title em { color: var(--gold-dark); }
+
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 6rem;
+    max-width: 1100px;
+  }
+
+  .contact-info h2 {
+    margin-bottom: 1.2rem;
+  }
+
+  .contact-info p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: rgba(26,24,20,0.55);
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    font-size: 0.88rem;
+    color: rgba(26,24,20,0.6);
+  }
+
+  .contact-detail svg {
+    opacity: 0.4;
+    flex-shrink: 0;
+    stroke: var(--charcoal);
+  }
+
+  .contact-detail a {
+    color: var(--gold-dark);
+    text-decoration: none;
+  }
+
+  .contact-detail a:hover {
+    text-decoration: underline;
+  }
+
+  .form-group {
+    margin-bottom: 1.4rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(26,24,20,0.45);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: rgba(26,24,20,0.03);
+    border: 1px solid rgba(160,120,64,0.25);
+    color: var(--charcoal);
+    padding: 0.85rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+    border-radius: 0;
+  }
+
+  .form-group select option {
+    background: var(--warm-white);
+    color: var(--charcoal);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: rgba(26,24,20,0.3);
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--gold-dark);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 130px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1rem 2.2rem;
+    background: var(--gold-dark);
+    color: var(--warm-white);
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.15s;
+  }
+
+  .form-submit:hover {
+    background: var(--charcoal);
+  }
+
+  .form-submit:active {
+    transform: scale(0.98);
+  }
+
+  #form-success {
+    display: none;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--gold-dark);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 3rem 4rem;
+    border-top: 1px solid rgba(160,120,64,0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #DDD3BC;
+  }
+
+  .footer-logo {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--gold-dark);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    color: rgba(26,24,20,0.4);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .nav-inner {
+      padding: 1.15rem 2rem;
+    }
+
+    .nav-links {
+      gap: 1.5rem;
+    }
+
+    section {
+      padding: 5rem 2rem;
+    }
+
+    .hero {
+      padding: 7rem 2rem 4rem;
+    }
+
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .hero-media {
+      justify-content: flex-start;
+    }
+
+    .hero-photo-wrap {
+      max-width: 100%;
+    }
+
+    .hero-photo {
+      aspect-ratio: 16 / 10;
+    }
+
+    .about-inner,
+    .contact-inner {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .gallery-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+    }
+
+    .gallery-item:first-child {
+      grid-row: auto;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    footer {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .nav-links {
+      display: none;
+    }
+
+    .nav-toggle {
+      display: inline-flex;
+    }
+
+    .mobile-menu {
+      right: 2rem;
+      left: 2rem;
+      min-width: auto;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .nav-inner {
+      padding: 1rem 1.25rem;
+    }
+
+    section {
+      padding: 4.5rem 1.25rem;
+    }
+
+    .hero {
+      padding: 7.5rem 1.25rem 3.5rem;
+      min-height: auto;
+    }
+
+    .hero-name {
+      font-size: clamp(3.8rem, 16vw, 5.5rem);
+    }
+
+    .hero-tagline {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-cta {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .hero-photo {
+      aspect-ratio: 3 / 2;
+    }
+
+    .gallery-grid {
+      grid-template-columns: 1fr;
+    }
+
+    footer {
+      padding: 2rem 1.25rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">Max</a>
+
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#gallery">Photos</a></li>
+      <li><a href="#contact">Book</a></li>
+    </ul>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#gallery">Photos</a>
+      <a href="#contact">Book</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+
+  <div class="hero-inner">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Sacred Musician</p>
+      <h1 class="hero-name">Max</h1>
+      <p class="hero-tagline">
+        Piano, keys &amp; voice — bringing life and reverence to worship,
+        celebrations, and community.
+      </p>
+      <a href="#contact" class="hero-cta">
+        Book Max
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="hero-media">
+      <div class="hero-photo-wrap">
+        <div class="hero-photo">
+          <!-- Replace with real image -->
+          <!-- <img src="images/max-hero.jpg" alt="Max performing at piano"> -->
+          <div class="hero-photo-placeholder">
+            <svg viewBox="0 0 48 48" fill="none" stroke-width="1.5">
+              <circle cx="24" cy="16" r="8"/>
+              <path d="M8 42c0-8.837 7.163-16 16-16s16 7.163 16 16"/>
+            </svg>
+            <p>Add hero photo</p>
+          </div>
+        </div>
+        <div class="hero-photo-accent"></div>
+        <div class="hero-photo-accent-2"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="section-label">What I Offer</div>
+  <h2 class="section-title">Available for <em>every occasion</em></h2>
+  <div class="services-grid">
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 44 44" fill="none" stroke="#C9A86C" stroke-width="1.2">
+        <path d="M12 32V20l10-8 10 8v12"/>
+        <path d="M18 32v-7h8v7"/>
+        <path d="M6 32h32"/>
+        <circle cx="22" cy="10" r="2"/>
+      </svg>
+      <div class="service-name">Church Services</div>
+      <p class="service-desc">Sunday services, liturgical seasons, and weekly gatherings — supporting congregational worship with thoughtful sacred music.</p>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 44 44" fill="none" stroke="#C9A86C" stroke-width="1.2">
+        <path d="M18 10v18a4 4 0 1 0 2 3.5V14l12-3v14a4 4 0 1 0 2 3.5V8l-16 4z"/>
+      </svg>
+      <div class="service-name">Special Events</div>
+      <p class="service-desc">Weddings, memorials, dedications, and sacramental moments — providing music that honors and elevates the occasion.</p>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 44 44" fill="none" stroke="#C9A86C" stroke-width="1.2">
+        <circle cx="22" cy="22" r="14"/>
+        <path d="M22 8v4M22 32v4M8 22h4M32 22h4"/>
+        <path d="M15 15l3 3M26 26l3 3M15 29l3-3M26 18l3-3"/>
+        <circle cx="22" cy="22" r="4"/>
+      </svg>
+      <div class="service-name">Community Gatherings</div>
+      <p class="service-desc">Community concerts, charity events, civic celebrations, and neighborhood gatherings that bring people together through music.</p>
+    </div>
+
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-photo-wrap">
+      <div class="about-photo">
+        <!-- <img src="images/max-about.jpg" alt="Max performing"> -->
+        <div class="about-photo-placeholder">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="24" cy="16" r="8"/>
+            <path d="M8 42c0-8.837 7.163-16 16-16s16 7.163 16 16"/>
+          </svg>
+          <p>Add your photo</p>
+        </div>
+      </div>
+      <div class="about-accent"></div>
+      <div class="about-accent-2"></div>
+    </div>
+
+    <div class="about-text">
+      <div class="section-label">About Max</div>
+      <h2 class="section-title">Music as <em>ministry</em></h2>
+      <!-- <p>Whether accompanying congregational worship or providing a tender musical moment at a wedding, Max’s goal is always the same: to create a setting that feels warm, meaningful, and memorable.</p> -->
+      <p>Whether accompanying congregational worship or providing a tender musical moment at a wedding, Max’s goal is always the same — to create a setting that feels warm, meaningful, and memorable.</p>
+
+      <div class="skills-list">
+        <span class="skill-tag">Piano &amp; Keys</span>
+        <span class="skill-tag">Accompaniment</span>
+        <span class="skill-tag">Supporting Vocals</span>
+        <span class="skill-tag">Traditional Hymns</span>
+        <span class="skill-tag">Contemporary</span>
+        <span class="skill-tag">Sacred Music</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery" id="gallery">
+  <div class="section-label">Photos</div>
+  <h2 class="section-title">Max in <em>action</em></h2>
+
+  <div class="gallery-grid">
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="5" width="28" height="22" rx="2"/>
+          <circle cx="16" cy="16" r="5"/>
+          <circle cx="25" cy="9" r="2"/>
+        </svg>
+        <span>Photo 1</span>
+      </div>
+    </div>
+
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="5" width="28" height="22" rx="2"/>
+          <circle cx="16" cy="16" r="5"/>
+          <circle cx="25" cy="9" r="2"/>
+        </svg>
+        <span>Photo 2</span>
+      </div>
+    </div>
+
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="5" width="28" height="22" rx="2"/>
+          <circle cx="16" cy="16" r="5"/>
+          <circle cx="25" cy="9" r="2"/>
+        </svg>
+        <span>Photo 3</span>
+      </div>
+    </div>
+
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="5" width="28" height="22" rx="2"/>
+          <circle cx="16" cy="16" r="5"/>
+          <circle cx="25" cy="9" r="2"/>
+        </svg>
+        <span>Photo 4</span>
+      </div>
+    </div>
+
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="5" width="28" height="22" rx="2"/>
+          <circle cx="16" cy="16" r="5"/>
+          <circle cx="25" cy="9" r="2"/>
+        </svg>
+        <span>Photo 5</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <div class="section-label">Get in Touch</div>
+      <h2 class="section-title">Book <em>Max</em></h2>
+      <p>Ready to bring music to your next service or event? Reach out with your details and Max will respond promptly.</p>
+
+      <div class="contact-detail">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M2 4l6 4 6-4M2 4h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4z"/>
+        </svg>
+        <a href="mailto:max@example.com">max@example.com</a>
+      </div>
+
+      <div class="contact-detail">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M13 10.5c0 .3-.07.6-.22.87l-.7 1.17a1.5 1.5 0 0 1-1.17.76c-3.54.2-7.07-3.33-6.87-6.87a1.5 1.5 0 0 1 .76-1.17l1.17-.7c.27-.15.57-.22.87-.22.4 0 .77.2 1 .53l1 1.5c.26.39.26.9 0 1.29L8.2 8.2c.5 1 1.6 2.1 2.6 2.6l.55-.65c.39-.46.9-.46 1.29-.2l1.5 1c.33.23.53.6.53 1v.05z"/>
+        </svg>
+        <span>(555) 000-0000</span>
+      </div>
+
+      <div class="contact-detail">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+          <circle cx="8" cy="7" r="2.5"/>
+          <path d="M8 1a6 6 0 0 1 6 6c0 4-6 9-6 9S2 11 2 7a6 6 0 0 1 6-6z"/>
+        </svg>
+        <span>Effingham, IL &amp; surrounding region</span>
+      </div>
+    </div>
+
+    <form id="booking-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">First name</label>
+          <input type="text" id="fname" placeholder="Jane" required>
+        </div>
+        <div class="form-group">
+          <label for="lname">Last name</label>
+          <input type="text" id="lname" placeholder="Smith" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" placeholder="jane@yourchurch.org" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone (optional)</label>
+        <input type="tel" id="phone" placeholder="(555) 000-0000">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="event-type">Event type</label>
+          <select id="event-type">
+            <option value="">Select...</option>
+            <option>Church Service</option>
+            <option>Wedding</option>
+            <option>Memorial / Funeral</option>
+            <option>Community Gathering</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="event-date">Event date</label>
+          <input type="date" id="event-date">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Tell me about your event</label>
+        <textarea id="message" placeholder="Share any details about the occasion, your venue, what you're envisioning..."></textarea>
+      </div>
+
+      <button type="submit" class="form-submit">
+        Send Inquiry
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 8h12M10 4l4 4-4 4"/>
+        </svg>
+      </button>
+
+      <p id="form-success">✓ Your message was sent. Max will be in touch soon!</p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Max</div>
+  <p class="footer-copy">Sacred Musician &nbsp;·&nbsp; Effingham, IL</p>
+</footer>
+
+<script>
+  const nav = document.querySelector('nav');
+  const navToggle = document.querySelector('.nav-toggle');
+  const mobileLinks = document.querySelectorAll('.mobile-menu a');
+
+  navToggle.addEventListener('click', () => {
+    nav.classList.toggle('menu-open');
+    const expanded = nav.classList.contains('menu-open');
+    navToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  });
+
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('menu-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!nav.contains(e.target)) {
+      nav.classList.remove('menu-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.getElementById('booking-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('form-success').style.display = 'block';
+    this.reset();
+    setTimeout(() => {
+      document.getElementById('form-success').style.display = 'none';
+    }, 5000);
+  });
+</script>
+
+</body>
+</html>
