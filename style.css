@@ -672,6 +672,8 @@
 
   .form-group {
     margin-bottom: 1.4rem;
+   display: flex;
+  flex-direction: column;
   }
 
   .form-group label {
@@ -698,6 +700,7 @@
     transition: border-color 0.2s;
     appearance: none;
     border-radius: 0;
+   box-sizing: border-box;
   }
 
   .form-group select option {
